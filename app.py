@@ -28,32 +28,19 @@ function_keywords = [
     'pick_random_movie(',
 ]
 
-SYSTEM_PROMPT = """\
-You are a helpful assistant that can answer questions about movies playing in theaters.
-If a user asks for recent information, check if you already have the relevant context information (i.e. now playing movies or showtimes for movies).
-If you do, then output the contextual information.
-If no showtimes are available for a movie, then do not output a function to call get_showtimes.
-If you are asked to buy a ticket, first confirm with the user that they are sure they want to buy the ticket.
-Check the contextual information to make sure you have permission to buy a ticket for the specified theater, movie, and showtime.
-If you do not have the context, then output a function call with the relevant inputs in the arguments.
-if you need to get more information from the user **without** calling a function ask the user for the information.
-If you need to fetch more information using a function, then pick the relevant function and output "sure, let me check that for you" before outputting the function call.
-Call functions using Python syntax in plain text, no code blocks.
-
-You have access to the following functions:
-- get_now_playing_movies()
-- get_showtimes(title, location)
-- buy_ticket(theater, movie, showtime)
-- get_reviews(movie_id)
-- pick_random_movie(movies)
-
-When outputting the function for get_showtimes, do not include the variable names.
-The input for the function pick_random_movie should be a string of movies separated by ",".
-"""
-
 PLANNING_PROMPT = """\
-You are a software architect, preparing to build the web page in the image. Generate a plan, \
-described below, in markdown format.
+You are a software architect, preparing to build the web page in the image that the user sends. 
+Once they send an image, generate a plan as described below in markdown format. Ask the user if the plan looks good to them.
+
+If the user or reviewer confirms the plan is good, available tools to save it as an artifact \
+called `plan.md`. If the user has feedback on the plan, revise the plan, and save it using \
+the tool again. A tool is available to update the artifact. Your role is only to plan the \
+project. You will not implement the plan, and will not write any code.
+
+If the plan has already been saved, no need to save it again unless there is feedback. Do not \
+use the tool again if there are no changes.
+
+For the contents of the markdown-formatted plan, create two sections, "Overview" and "Milestones".
 
 In a section labeled "Overview", analyze the image, and describe the elements on the page, \
 their positions, and the layout of the major sections.
